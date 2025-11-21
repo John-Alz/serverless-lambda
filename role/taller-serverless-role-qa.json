@@ -1,0 +1,55 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "networkInterface",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "cloudwatchlogs",
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:CreateLogGroup",
+                "logs:PutLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:logs:us-east-1:177333342796:log-group:/aws/lambda/taller-serverless-qa",
+                "arn:aws:logs:us-east-1:177333342796:log-group:/aws/lambda/taller-serverless-qa:*"
+            ]
+        },
+        {
+            "Sid": "eventbridge",
+            "Effect": "Allow",
+            "Action": [
+                "events:PutEvents"
+            ],
+            "Resource": "arn:aws:events:us-east-1:177333342796:event-bus/Bus-QA"
+        },
+        {
+            "Sid": "kmsdefaultkey",
+            "Action": [
+                "kms:Decrypt",
+                "kms:DescribeKey"
+            ],
+            "Effect": "Allow",
+            "Resource": "arn:aws:kms:us-east-1:177333342796:key/41bca839-b19c-4bb0-a058-e1060970142a"
+        },
+        {
+            "Sid": "DynamoDBRead",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+                "dynamodb:Scan"
+            ],
+            "Resource": "arn:aws:dynamodb:us-east-1:177333342796:table/nequi-parameters-qa"
+        }
+    ]
+}

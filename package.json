@@ -1,0 +1,23 @@
+{
+  "name": "taller-serverless",
+  "version": "1.0.0",
+  "description": "taller-serverless",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc --reporter=lcov --reporter=text jasmine --config=test/support/jasmine.json"
+  },
+  "author": "jjangel_nequi <jjangel@nequi.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@nequi/nequi-api-utils": "^1.0.2",
+    "@nequi/nequi-aws-dynamodb": "^4.0.0",
+    "@nequi/nequi-utils": "^7.1.0",
+    "jsonschema": "1.4.1"
+  },
+  "devDependencies": {
+    "@nequi/nequi-ci-utils": "^3.0.0",
+    "jasmine": "4.5.0",
+    "jasmine-reporters": "2.5.2",
+    "nyc": "15.1.0"
+  }
+}

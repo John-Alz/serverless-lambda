@@ -1,0 +1,35 @@
+@startuml taller serverless
+header taller-serverless
+footer Página %page% of %lastpage%
+title Diagrama de reto serverless - Flujo Lambda
+
+start
+
+:Recibir evento;
+
+if (Validar schema del evento) then (éxito)
+  :Ejecutar lógica de negocio;
+  :Llamar al servicio;
+  if (Parsear body del evento) then (éxito)
+    :Consultar DynamoDB;
+    if (Item encontrado?) then (si)
+      :Retornar item;
+      :Construir respuesta exitosa;
+      stop
+    else (no)
+      :Lanzar error "Dato no encontrado";
+      :Capturar error y finalizar con error;
+      stop
+    endif
+  else (falla)
+    :Lanzar error "Error Técnico";
+    :Capturar error y finalizar con error;
+    stop
+  endif
+else (falla)
+  :Lanzar error "Parámetros incorrectos";
+  :Capturar error y finalizar con error;
+  stop
+endif
+
+@enduml
