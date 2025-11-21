@@ -4,17 +4,17 @@ footer Página %page% of %lastpage%\nmade with ♥ by Nequi
 title **λ - Flow to taller-serverless**
 autonumber
 
-boundary Apigateway #SteelBlue
+boundary User #SteelBlue
 boundary taller_serverless #SteelBlue
 boundary dynamoDB #SteelBlue
 
-Apigateway -> taller_serverless: invokeLambda (RequestMessage) 
+User -> taller_serverless: invokeLambda (RequestMessage) 
 
 taller_serverless -> taller_serverless: validateSchema(event)
 
 taller_serverless -> dynamoDB: getItem(key, region)
 dynamoDB --> taller_serverless: return Item
 
-taller_serverless -> Apigateway: Lambda Response (Success)
+taller_serverless -> User: Lambda Response (Success)
 
 @enduml

@@ -9,33 +9,20 @@ let nequiDynamoDB = require('@nequi/nequi-aws-dynamodb');
 
 const service = async (event) => {
   try {
-    // Implementar el llamado a elementos externos
-    // let data = await nequiDynamo.getItem('table', {id:1});
 
-    console.log('================================');
-    console.log('LLEGÓ ESTO AL SERVICIO:', JSON.stringify(event, null, 2));
-    console.log('================================');
 
-    let payload = event;
-
-    // Si el evento viene encapsulado en un 'body' string (típico de Lambda Proxy), lo parseamos.
-    // Pero si ya es el objeto RequestMessage (como en tu test local), usamos 'event' directo.
-    if (event.body && typeof event.body === 'string') {
-      payload = JSON.parse(event.body);
-    }
-
-    const requestData = payload.RequestMessage.RequestBody.any.onboardingTestRQ;
+    const requestData = event.RequestMessage.RequestBody.any.onboardingTestRQ;
+    const region = event.RequestMessage.RequestHeader.Destination.ServiceRegion;
 
 
     const tableName = process.env.NEQUI_TABLE_PARAMETERS;
 
     const key = {
       "key": requestData.key,
-      "region": requestData.region
+      "region": region
     };
 
-    console.log('Consultando Dynamo con librería Nequi:', key);
-
+    console.log("Key service:", key)
 
     const result = await nequiDynamoDB.getItem(tableName, key);
 
@@ -48,7 +35,6 @@ const service = async (event) => {
         'Dato no encontrado', 'DynamoDB', null
       )
     }
-
 
     console.log('Resultado obtenido:', result.Item);
 

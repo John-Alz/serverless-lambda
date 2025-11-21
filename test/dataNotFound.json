@@ -16,8 +16,7 @@
         "RequestBody": {
             "any": {
                 "onboardingTestRQ": {
-                    "key": "ESTE_ID_NO_EXISTE",
-                    "region": "C001"
+                    "key": "ESTE_ID_NO_EXISTE"
                 }
             }
         }

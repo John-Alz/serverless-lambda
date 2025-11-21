@@ -15,7 +15,6 @@
         "RequestBody": {
             "any": {
                 "onboardingTestRQ": {
-                    "region": "C001"
                 }
             }
         }

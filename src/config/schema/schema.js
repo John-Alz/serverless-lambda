@@ -44,12 +44,10 @@ module.exports = {
                 "onboardingTestRQ": {
                   "type": "object",
                   "properties": {
-                    "key": { "type": "string" },
-                    "region": { "type": "string" }
+                    "key": { "type": "string" }
                   },
                   "required": [
                     "key",
-                    "region"
                   ]
                 }
               },

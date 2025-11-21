@@ -4,32 +4,29 @@ footer Página %page% of %lastpage%\nmade with ♥ by Nequi
 title **λ - Flow to taller-serverless (Scenarios)**
 autonumber
 
-boundary Apigateway #SteelBlue
+boundary User #SteelBlue
 boundary taller_serverless #SteelBlue
 boundary dynamoDB #SteelBlue
 
-Apigateway -> taller_serverless: invokeLambda (RequestMessage)
+User -> taller_serverless: invokeLambda (RequestMessage)
 
 taller_serverless -> taller_serverless: validateSchema(event)
 
 alt #Pink Validation Failed (Schema Incorrecto)
     
-    taller_serverless -> Apigateway: Error Response (20-05A Bad Parameters)
+    taller_serverless -> User: Error Response (20-05A Bad Parameters)
 
 else #LightGreen Validation Success (Schema Correcto)
 
     taller_serverless -> dynamoDB: getItem(key, region)
     
     alt #Pink Data Not Found (Dynamo vacío)
-        
         dynamoDB --> taller_serverless: null / empty
-        taller_serverless -> Apigateway: Error Response (20-08A Data Not Found)
+        taller_serverless -> User: Error Response (20-08A Data Not Found)
         
     else #LightGreen Data Found (Éxito)
-    
         dynamoDB --> taller_serverless: Return Item
-        taller_serverless -> Apigateway: Success Response (0 - OK)
-        
+        taller_serverless -> User: Success Response (0 - OK)
     end
     
 end
