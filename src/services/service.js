@@ -16,17 +16,22 @@ const service = async (event) => {
     console.log('LLEGÓ ESTO AL SERVICIO:', JSON.stringify(event, null, 2));
     console.log('================================');
 
-    let body = event.body;
-    if (typeof body === 'string') {
-      body = JSON.parse(body);
+    let payload = event;
+
+    // Si el evento viene encapsulado en un 'body' string (típico de Lambda Proxy), lo parseamos.
+    // Pero si ya es el objeto RequestMessage (como en tu test local), usamos 'event' directo.
+    if (event.body && typeof event.body === 'string') {
+      payload = JSON.parse(event.body);
     }
+
+    const requestData = payload.RequestMessage.RequestBody.any.onboardingTestRQ;
 
 
     const tableName = process.env.NEQUI_TABLE_PARAMETERS;
 
     const key = {
-      "key": body.key,
-      "region": body.region
+      "key": requestData.key,
+      "region": requestData.region
     };
 
     console.log('Consultando Dynamo con librería Nequi:', key);
@@ -35,7 +40,7 @@ const service = async (event) => {
     const result = await nequiDynamoDB.getItem(tableName, key);
 
     if (!result || (result.Item && Object.keys(result.Item).length === 0)) {
-      throw lambdaUtils.buildOutput(404, true,
+      throw lambdaUtils.buildOutput(true, true,
         getOutput(event,
           RESPONSE_MESSAGES.DATA_NOT_FOUND.CODE,
           RESPONSE_MESSAGES.DATA_NOT_FOUND.DESCRIPTION
@@ -53,7 +58,7 @@ const service = async (event) => {
     if (!!error && !!error.output) {
       throw error
     } else {
-      throw lambdaUtils.buildOutput(500, true,
+      throw lambdaUtils.buildOutput(false, true,
         getOutput(event, RESPONSE_MESSAGES.TECHNICAL_ERROR.CODE,
           RESPONSE_MESSAGES.TECHNICAL_ERROR.DESCRIPTION),
         'Sistema que fallo', 'proceso o función', error)

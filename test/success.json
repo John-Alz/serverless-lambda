@@ -1,12 +1,24 @@
 {
-    "httpMethod": "POST",
-    "path": "/test",
-    "headers": { 
-        "Content-Type": "application/json" 
-    },
-    "requestContext": {
-        "requestId": "test-id-123"
-    },
-    "body": "{\"key\": \"onboardingTest\", \"region\": \"C001\"}",
-    "isBase64Encoded": false
+    "RequestMessage": {
+        "RequestHeader": {
+            "Channel": "MF-001",
+            "RequestDate": "2025-11-21T12:00:00.000Z",
+            "MessageID": "test-id-success",
+            "ClientID": "3195414070",
+            "Destination": {
+                "ServiceName": "OnboardingService",
+                "ServiceOperation": "onboardingTest",
+                "ServiceRegion": "C001",
+                "ServiceVersion": "1.0.0"
+            }
+        },
+        "RequestBody": {
+            "any": {
+                "onboardingTestRQ": {
+                    "key": "onboardingTest",
+                    "region": "C001"
+                }
+            }
+        }
+    }
 }

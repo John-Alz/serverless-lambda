@@ -9,10 +9,17 @@ const schema = require('./schema')
 
 module.exports = async (event) => {
   const validator = new Validator()
-  const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
-  const validatorResponse = validator.validate(body, schema).errors
+  let payload = event;
+
+  if (event.body) {
+    payload = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+  }
+
+  const validatorResponse = validator.validate(payload, schema).errors
   if (validatorResponse.length > 0) {
-    throw lambdaUtils.buildOutput(400, true,
+    console.log("!!! ERROR DE VALIDACIÓN DETECTADO !!!");
+    console.log(JSON.stringify(validatorResponse, null, 2));
+    throw lambdaUtils.buildOutput(true, true,
       getOutput(event, RESPONSE_MESSAGES.BAD_PARAMETERS.CODE,
         RESPONSE_MESSAGES.BAD_PARAMETERS.DESCRIPTION),
       'taller-serverless', 'validator')

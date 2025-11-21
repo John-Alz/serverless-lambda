@@ -45,9 +45,7 @@
             "Sid": "DynamoDBRead",
             "Effect": "Allow",
             "Action": [
-                "dynamodb:GetItem",
-                "dynamodb:Query",
-                "dynamodb:Scan"
+                "dynamodb:GetItem"
             ],
             "Resource": "arn:aws:dynamodb:us-east-1:177333342796:table/nequi-parameters-qa"
         }

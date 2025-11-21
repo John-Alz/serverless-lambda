@@ -13,6 +13,10 @@ describe('Pruebas de Integración - Flujo Completo (Handler)', () => {
       console.log('Success Response:', JSON.stringify(response, null, 2));
 
       expect(response).toBeDefined();
+      expect(response.ResponseMessage).toBeDefined();
+      expect(response.ResponseMessage.ResponseHeader).toBeDefined();
+      expect(response.ResponseMessage.ResponseHeader.Status).toBeDefined();
+
       expect(response.ResponseMessage.ResponseHeader.Status.StatusCode).toBe("0");
 
       const bodyObj = response.ResponseMessage.ResponseBody;
@@ -28,23 +32,34 @@ describe('Pruebas de Integración - Flujo Completo (Handler)', () => {
 
   it('index.js: Data Not Found test', async () => {
     try {
-      await lambdaTestUtils.test(index.handler, 'test/dataNotFound.json');
-      fail('Expected an error to be thrown');
+      const response = await lambdaTestUtils.test(index.handler, 'test/dataNotFound.json');
+      console.log('Data Not Found Response:', JSON.stringify(response, null, 2));
+
+      expect(response).toBeDefined();
+      expect(response.ResponseMessage).toBeDefined();
+      expect(response.ResponseMessage.ResponseHeader).toBeDefined();
+      expect(response.ResponseMessage.ResponseHeader.Status).toBeDefined();
+      expect(response.ResponseMessage.ResponseHeader.Status.StatusCode).toBe("20-08A");
+
     } catch (error) {
       console.log('Not Found Response:', JSON.stringify(error, null, 2));
-      expect(error).toBeDefined();
-      expect(error.ResponseMessage.ResponseHeader.Status.StatusCode).toBe("20-08A");
+      expect(error).not.toBeDefined();
     }
   });
 
   it('index.js: Bad Parameters test - Debe responder 400 Bad Request por Schema', async () => {
     try {
-      await lambdaTestUtils.test(index.handler, 'test/badParameters.json');
-      fail('Expected an error to be thrown');
+      const response = await lambdaTestUtils.test(index.handler, 'test/badParameters.json');
+      console.log('Bad Parameters Response:', JSON.stringify(response, null, 2));
+
+      expect(response).toBeDefined();
+      expect(response.ResponseMessage).toBeDefined();
+      expect(response.ResponseMessage.ResponseHeader).toBeDefined();
+      expect(response.ResponseMessage.ResponseHeader.Status).toBeDefined();
+      expect(response.ResponseMessage.ResponseHeader.Status.StatusCode).toBe("20-05A");
     } catch (error) {
       console.log('Bad Params Response:', JSON.stringify(error, null, 2));
-      expect(error).toBeDefined();
-      expect(error.ResponseMessage.ResponseHeader.Status.StatusCode).toBe("20-05A");
+      expect(error).not.toBeDefined();
     }
   });
 });

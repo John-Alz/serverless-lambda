@@ -1,35 +1,37 @@
-@startuml taller serverless
-header taller-serverless
-footer By jjangel
-title Diagrama de reto serverless - Flujo Lambda
+@startuml
+header Diagram of sequence: taller-serverless
+footer Página %page% of %lastpage%\nmade with ♥ by Nequi
+title **λ - Flow to taller-serverless (Scenarios)**
+autonumber
 
-start
+boundary Apigateway #SteelBlue
+boundary taller_serverless #SteelBlue
+boundary dynamoDB #SteelBlue
 
-:Recibir evento;
+Apigateway -> taller_serverless: invokeLambda (RequestMessage)
 
-if (Validar schema del evento) then (éxito)
-  :Ejecutar lógica de negocio;
-  :Llamar al servicio;
-  if (Parsear body del evento) then (éxito)
-    :Consultar DynamoDB;
-    if (Item encontrado?) then (si)
-      :Retornar item;
-      :Construir respuesta exitosa;
-      stop
-    else (no)
-      :Lanzar error "Dato no encontrado";
-      :Capturar error y finalizar con error;
-      stop
-    endif
-  else (falla)
-    :Lanzar error "Error Técnico";
-    :Capturar error y finalizar con error;
-    stop
-  endif
-else (falla)
-  :Lanzar error "Parámetros incorrectos";
-  :Capturar error y finalizar con error;
-  stop
-endif
+taller_serverless -> taller_serverless: validateSchema(event)
+
+alt #Pink Validation Failed (Schema Incorrecto)
+    
+    taller_serverless -> Apigateway: Error Response (20-05A Bad Parameters)
+
+else #LightGreen Validation Success (Schema Correcto)
+
+    taller_serverless -> dynamoDB: getItem(key, region)
+    
+    alt #Pink Data Not Found (Dynamo vacío)
+        
+        dynamoDB --> taller_serverless: null / empty
+        taller_serverless -> Apigateway: Error Response (20-08A Data Not Found)
+        
+    else #LightGreen Data Found (Éxito)
+    
+        dynamoDB --> taller_serverless: Return Item
+        taller_serverless -> Apigateway: Success Response (0 - OK)
+        
+    end
+    
+end
 
 @enduml
