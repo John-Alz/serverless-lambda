@@ -1,6 +1,6 @@
 @startuml taller serverless
 header taller-serverless
-footer Página %page% of %lastpage%
+footer By jjangel
 title Diagrama de reto serverless - Flujo Lambda
 
 start
